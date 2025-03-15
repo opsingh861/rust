@@ -1,37 +1,66 @@
+// structs
+
+struct User {
+    username: String,
+    email: String,
+    sign_in_count: u64,
+    active: bool,
+}
+
+struct Color(i32, i32, i32);
+struct Point(i32, i32, i32);
+
+struct Rectangle {
+    width: u32,
+    height: u32,
+}
+
+impl Rectangle {
+    fn area(&self) -> u32 {
+        self.width * self.height
+    }
+
+    fn can_hold(&self, other: &Rectangle) -> bool {
+        self.width > other.width && self.height > other.height
+    }
+
+    fn square(size: u32) -> Rectangle {
+        Rectangle {
+            width: size,
+            height: size,
+        }
+    }
+}
+
 fn main() {
-    // Borrowing
-    let s1 = String::from("hello");
-    let s2 = &s1;
-    let s3 = &s1; // we can have multiple immutable references to the same value
-    let len = calculate_length(&s1);
-    println!("The length of '{}' is {}.", s1, len);
+    let user1 = User {
+        email: String::from("opsingh861@gmail.com"),
+        username: String::from("opsingh"),
+        active: true,
+        sign_in_count: 1,
+    };
 
-    // Mutable references
-    let something = String::from("hello");
-    wrong_change(&something); // This will not compile because s is borrowed as immutable
-    wrong_change(&mut something); // this will also throw an error because we are trying to borrow the value as mutable which is immutable in nature
+    println!("User1 email: {}", user1.email);
 
-    let mut s = String::from("hello");
-    change(&mut s);
-    println!("{}", s);
+    let red = Color(255, 0, 0);
+    let origin = Point(0, 0, 0);
 
-    let mut r1 = String::from("hello");
-    let r2 = &mut r1;
-    let r3 = &mut r1; // We cannot have multiple mutable references to the same value but there is catch, if we are not using the first mutable reference then we can have mutable reference to the same value
-    let r4 = &r1; // It will also throw error because after trying borrowing anything as mutable reference we can't even borrow it as immutable reference
-    print!("{}", r1); // Till now it will work
-    print!("{}", r2); // Till now it will work as we are we are using r2 which was which was borrowed as mutable reference
-    print!("{}", r3); // This will throw an error because we can't have multiple mutable references to the same value
-}
+    println!("Red color: {}, {}, {}", red.0, red.1, red.2);
 
-fn calculate_length(s: &String) -> i32 {
-    return s.len() as i32;
-}
+    let rect1 = Rectangle {
+        width: 30,
+        height: 50,
+    };
 
-fn wrong_change(something: &String) {
-    something.push_str(", world"); // we are trying to modify the borrowed value which is not mutable in nature
-}
+    println!("Area of rect1: {}", rect1.area());
+    println!(
+        "Can rect1 hold rect2: {}",
+        rect1.can_hold(&Rectangle {
+            width: 10,
+            height: 40
+        })
+    );
 
-fn change(s: &mut String) {
-    s.push_str(", world");
+    let square = Rectangle::square(10);
+    println!("Area of square: {}", square.area());
 }
