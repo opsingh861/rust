@@ -1,58 +1,45 @@
-// Iterators
+// String and Slices
 
 fn main() {
-    // let v = vec![1, 2, 3, 4, 5, 6];
+    // let mut name = String::from("Aditya Dhanraj"); // `name` is a mutable `String` on the heap.
 
-    // for num in v {  // it is same as v.iter()
-    //     print!("{}", num);
-    // }
+    // let first_name = &name[0..6]; // Borrowing `name`, creating a string slice (&str).
+    // // This means `first_name` is an immutable reference to part of `name`.
 
-    // print!("{:?}",v); // this will not work as values has been moved v.iter()
-    // let v_iter = v.iter();
+    // name = String::from("John Doe"); // ERROR: Cannot mutate `name` while `first_name` is still in use.
+    // // `first_name` still holds a reference to part of `name`, so Rust does not allow modifying `name`.
+    // // If `first_name` is not used after this point, Rust will allow reassignment.
 
-    // for i in v_iter {
-    //     print!("{}", i);
-    // }
+    // println!("{}", first_name); // This line accesses `first_name`, meaning its borrow is still active.
+    // println!("{}", name); // Rust does not allow mutation while an immutable reference exists.
 
-    // print!("{}", v); // again it will not work as it has been moved to v_iter
-    // let mut v = vec![1, 2, 3, 4, 5, 6];
+    // // --------- Borrowing in a function -----------
 
-    // let mut v_iter_mut = v.iter_mut();
+    // let first_name = get_first_name(&name); // `get_first_name` borrows `name`, but only inside the function.
+    // // The borrow exists *only* for the duration of `get_first_name` and is not active after returning.
 
-    // while let Some(val) = v_iter_mut.next() {
-    //     print!("{} ", val);
-    // }
+    // print!("{}", first_name); // This is allowed because `get_first_name`'s borrow has ended.
 
-    // let iter_mut = v.iter_mut();
-
-    // for val in iter_mut {
-    //     // mutating the value
-    //     *val = *val + 1;
-    // }
-
-    // print!("{:?}", v);
-
-    // let iter = v.into_iter();
-
-    // for val in iter { // happens when we run for loop normaly
-    //     print!("{} ", val);
-    // }
-    // // print!("{:?}", v); // ownership moved to iter after using into_iter
-
-    let v = vec![1, 2, 3, 4, 5, 6];
-    let result = filter_map(v);
-
-    print!("{:?}", result);
-
-    // iterator in map will be same
+    // name = String::from("John doe"); // Allowed here because there are no **active** borrows of `name` at this point.
+    let some_string = "Some data"; // String slices
+    let num = [1, 2, 3, 4];
+    let data = &num[0..2];
+    println!("{:?}", data);
 }
 
-fn filter_map(v: Vec<i32>) -> Vec<i32> {
-    let result = v
-        .iter()
-        .filter(|value| *value % 2 == 0)
-        .map(|val| val + 1)
-        .collect(); // collect will give new Vec other we would have recieved new iterator
+// Function to extract the first name from a given string
+fn get_first_name(name: &String) -> &str {
+    let mut index = 0; // Index to track the position of the first space
 
-    return result;
+    for i in name.chars() {
+        if i == ' ' {
+            // Stop when the first space is found
+            break;
+        } else {
+            index += 1; // Otherwise, increment index
+        }
+    }
+
+    return &name[0..index]; // Return a slice of `name` from index 0 to the first space.
+    // This slice is valid as long as `name` is still in scope and unchanged.
 }
