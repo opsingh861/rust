@@ -1,34 +1,34 @@
-// enums
+// Error handling
+use std::fs::read_to_string;
 
-enum Direction {
-    East,
-    West,
-    North,
-    South,
-}
-
-enum Shapes {
-    Circle(u32),
-    Square(u32),
-    Rectangle(u32, u32),
-}
-
-fn calculate_area(shape: Shapes) -> f64 {
-    // pattern matching
-    match shape {
-        Shapes::Circle(radius) => 3.14 * (radius as f64) * (radius as f64),
-        Shapes::Rectangle(length, breadth) => (length as f64) * (breadth as f64),
-        Shapes::Square(side) => (side as f64) * (side as f64),
-    }
-}
+// enum Result<T, E> { // Result is a generic type with two type parameters: T and E (T is the type of the value that the Result type is holding, and E is the type of the error that the Result type is holding)
+//     Ok(T),
+//     Err(E),
+// }
 
 fn main() {
-    // let some_direction = Direction::East;
-    // let wrong_direction = Direction::Something; // Error: no variant named `Something` found for type `Direction` in the current scope
+    // let result = fs::read("hello.txt");
+    // match result {
+    //     Ok(content) => {
+    //         println!("File content: {:?}", content);
+    //     }
+    //     Err(error) => {
+    //         println!("Error: {:?}", error);
+    //     }
+    // }
 
-    let circle = Shapes::Circle(10);
-    let another_shape = Shapes::Rectangle(10, 20);
-    let rectangle = Shapes::Rectangle(10, 20);
+    // let content = fs::read("hello.txt").unwrap(); // unwrap() returns the value inside the Ok variant if the Result is Ok, and panics if the Result is Err
+    // println!("File content: {:?}", content); // This line will not be executed if the Result is Err because unwrap() will panic
 
-    println!("Area of circle: {}", calculate_area(circle));
+    let content = read_file("hello.txt".to_string());
+    print!("File content: {:?}", content);
+    print!("End of program");
+}
+
+fn read_file(file_name: String) -> Result<String, String> {
+    let result = read_to_string(file_name);
+    match result {
+        Ok(content) => Ok(content),
+        Err(_) => Err("Error reading file".to_string()),
+    }
 }
