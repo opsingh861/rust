@@ -1,27 +1,58 @@
-// hashmaps
-
-use std::collections::HashMap;
+// Iterators
 
 fn main() {
-    let mut map = HashMap::new();
-    map.insert("Aditya Dhanraj", 24);
-    map.insert("John", 20);
+    // let v = vec![1, 2, 3, 4, 5, 6];
 
-    println!("{:?}", map);
+    // for num in v {  // it is same as v.iter()
+    //     print!("{}", num);
+    // }
 
-    let tuple = vec![('a', 1), ('b', 2)];
+    // print!("{:?}",v); // this will not work as values has been moved v.iter()
+    // let v_iter = v.iter();
 
-    let key_value_pair = get_map(tuple);
+    // for i in v_iter {
+    //     print!("{}", i);
+    // }
 
-    println!("{:?}", key_value_pair)
+    // print!("{}", v); // again it will not work as it has been moved to v_iter
+    // let mut v = vec![1, 2, 3, 4, 5, 6];
+
+    // let mut v_iter_mut = v.iter_mut();
+
+    // while let Some(val) = v_iter_mut.next() {
+    //     print!("{} ", val);
+    // }
+
+    // let iter_mut = v.iter_mut();
+
+    // for val in iter_mut {
+    //     // mutating the value
+    //     *val = *val + 1;
+    // }
+
+    // print!("{:?}", v);
+
+    // let iter = v.into_iter();
+
+    // for val in iter { // happens when we run for loop normaly
+    //     print!("{} ", val);
+    // }
+    // // print!("{:?}", v); // ownership moved to iter after using into_iter
+
+    let v = vec![1, 2, 3, 4, 5, 6];
+    let result = filter_map(v);
+
+    print!("{:?}", result);
+
+    // iterator in map will be same
 }
 
-fn get_map(tuple: Vec<(char, i32)>) -> HashMap<char, i32> {
-    let mut some_map = HashMap::new();
+fn filter_map(v: Vec<i32>) -> Vec<i32> {
+    let result = v
+        .iter()
+        .filter(|value| *value % 2 == 0)
+        .map(|val| val + 1)
+        .collect(); // collect will give new Vec other we would have recieved new iterator
 
-    for (c, n) in tuple {
-        some_map.insert(c, n);
-    }
-
-    return some_map;
+    return result;
 }
