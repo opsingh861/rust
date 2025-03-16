@@ -1,34 +1,24 @@
-// Error handling
-use std::fs::read_to_string;
+// Options are an enum type that is defined in the standard library, since there is not concept of null here so we can use option to return None when we want to return nothing.
 
-// enum Result<T, E> { // Result is a generic type with two type parameters: T and E (T is the type of the value that the Result type is holding, and E is the type of the error that the Result type is holding)
-//     Ok(T),
-//     Err(E),
+// pub enum Option<T> { // Option is a generic enum type with one type parameter
+//     None,
+//     Some(T),
 // }
 
 fn main() {
-    // let result = fs::read("hello.txt");
-    // match result {
-    //     Ok(content) => {
-    //         println!("File content: {:?}", content);
-    //     }
-    //     Err(error) => {
-    //         println!("Error: {:?}", error);
-    //     }
-    // }
-
-    // let content = fs::read("hello.txt").unwrap(); // unwrap() returns the value inside the Ok variant if the Result is Ok, and panics if the Result is Err
-    // println!("File content: {:?}", content); // This line will not be executed if the Result is Err because unwrap() will panic
-
-    let content = read_file("hello.txt".to_string());
-    print!("File content: {:?}", content);
-    print!("End of program");
+    let my_name = String::from("Rust");
+    let result = first_a_index(&my_name);
+    match result {
+        Some(index) => println!("The first 'a' in 'Rust' is at index: {}", index),
+        None => println!("There is no 'a' in {}", my_name),
+    }
 }
 
-fn read_file(file_name: String) -> Result<String, String> {
-    let result = read_to_string(file_name);
-    match result {
-        Ok(content) => Ok(content),
-        Err(_) => Err("Error reading file".to_string()),
+fn first_a_index(s: &str) -> Option<usize> {
+    for (i, c) in s.chars().enumerate() {
+        if c == 'a' {
+            return Some(i);
+        }
     }
+    None
 }
