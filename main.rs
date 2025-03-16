@@ -16,6 +16,8 @@ fn main() {
     print!("{:?}", numbers);
 
     print_vec(&mut numbers);
+
+    let some_other_vector = vec![1, 2, 3, 4]; // type will be infered automatically
 }
 
 fn filter_even(numbers: Vec<i32>) -> Vec<i32> {
