@@ -1,53 +1,27 @@
-// Vectors
+// hashmaps
+
+use std::collections::HashMap;
 
 fn main() {
-    let mut numbers = Vec::new();
+    let mut map = HashMap::new();
+    map.insert("Aditya Dhanraj", 24);
+    map.insert("John", 20);
 
-    numbers.push(1); // if this is commented then rust is not able to infer the type of Vector and throwing error at above line, because explicitly we have not defined the type
-    numbers.push(2);
-    numbers.push(3);
-    numbers.push(4);
-    numbers.push(5);
+    println!("{:?}", map);
 
-    // let even_numbers = filter_even(numbers);
+    let tuple = vec![('a', 1), ('b', 2)];
 
-    filter_even_inplace(&mut numbers);
-    println!("");
-    print!("{:?}", numbers);
+    let key_value_pair = get_map(tuple);
 
-    print_vec(&mut numbers);
-
-    let some_other_vector = vec![1, 2, 3, 4]; // type will be infered automatically
+    println!("{:?}", key_value_pair)
 }
 
-fn filter_even(numbers: Vec<i32>) -> Vec<i32> {
-    // with extra storage
-    let mut ans: Vec<i32> = Vec::new();
-    for num in numbers {
-        if num % 2 == 0 {
-            ans.push(num);
-        }
+fn get_map(tuple: Vec<(char, i32)>) -> HashMap<char, i32> {
+    let mut some_map = HashMap::new();
+
+    for (c, n) in tuple {
+        some_map.insert(c, n);
     }
 
-    return ans;
-}
-
-fn filter_even_inplace(numbers: &mut Vec<i32>) {
-    let mut i = 0;
-    while i < numbers.len() {
-        if numbers[i] % 2 != 0 {
-            print!("{} ", numbers[i]);
-            numbers.remove(i);
-        } else {
-            i += 1;
-        }
-    }
-}
-
-fn print_vec(v: &Vec<i32>) {
-    println!();
-    let mut new_vec: Vec<i32> = Vec::new();
-    for num in v {
-        new_vec.push(*num); // need to deference
-    }
+    return some_map;
 }
