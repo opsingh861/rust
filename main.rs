@@ -1,66 +1,34 @@
-// structs
+// enums
 
-struct User {
-    username: String,
-    email: String,
-    sign_in_count: u64,
-    active: bool,
+enum Direction {
+    East,
+    West,
+    North,
+    South,
 }
 
-struct Color(i32, i32, i32);
-struct Point(i32, i32, i32);
-
-struct Rectangle {
-    width: u32,
-    height: u32,
+enum Shapes {
+    Circle(u32),
+    Square(u32),
+    Rectangle(u32, u32),
 }
 
-impl Rectangle {
-    fn area(&self) -> u32 {
-        self.width * self.height
-    }
-
-    fn can_hold(&self, other: &Rectangle) -> bool {
-        self.width > other.width && self.height > other.height
-    }
-
-    fn square(size: u32) -> Rectangle {
-        Rectangle {
-            width: size,
-            height: size,
-        }
+fn calculate_area(shape: Shapes) -> f64 {
+    // pattern matching
+    match shape {
+        Shapes::Circle(radius) => 3.14 * (radius as f64) * (radius as f64),
+        Shapes::Rectangle(length, breadth) => (length as f64) * (breadth as f64),
+        Shapes::Square(side) => (side as f64) * (side as f64),
     }
 }
 
 fn main() {
-    let user1 = User {
-        email: String::from("opsingh861@gmail.com"),
-        username: String::from("opsingh"),
-        active: true,
-        sign_in_count: 1,
-    };
+    // let some_direction = Direction::East;
+    // let wrong_direction = Direction::Something; // Error: no variant named `Something` found for type `Direction` in the current scope
 
-    println!("User1 email: {}", user1.email);
+    let circle = Shapes::Circle(10);
+    let another_shape = Shapes::Rectangle(10, 20);
+    let rectangle = Shapes::Rectangle(10, 20);
 
-    let red = Color(255, 0, 0);
-    let origin = Point(0, 0, 0);
-
-    println!("Red color: {}, {}, {}", red.0, red.1, red.2);
-
-    let rect1 = Rectangle {
-        width: 30,
-        height: 50,
-    };
-
-    println!("Area of rect1: {}", rect1.area());
-    println!(
-        "Can rect1 hold rect2: {}",
-        rect1.can_hold(&Rectangle {
-            width: 10,
-            height: 40
-        })
-    );
-
-    let square = Rectangle::square(10);
-    println!("Area of square: {}", square.area());
+    println!("Area of circle: {}", calculate_area(circle));
 }
