@@ -1,7 +1,15 @@
-// Lifetime of structs
+// Display trait
+
+use std::fmt;
 
 struct User<'a> {
     name: &'a str, // without lifetime specifier it will give error
+}
+
+impl fmt::Display for User<'_> {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "User {{ name: {} }}", self.name)
+    }
 }
 
 fn main() {
@@ -13,12 +21,9 @@ fn main() {
 
     // println!("{}", name); // this will work as name is not going out of scope
 
-    let user;
+    let user = User {
+        name: "Aditya Dhanraj",
+    };
 
-    {
-        let name = String::from("Aditya Dhanraj");
-        user = User { name: &name } // same issue, name will be out of scope and we are trying to access the it out of the scope, problem is with the reference. If that values itself will be not there how can use that.
-    }
-
-    println!("{:?}", user.name); // this will not work
+    println!("{}", user); // this will not work
 }
