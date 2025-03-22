@@ -1,22 +1,34 @@
-use std::time::Duration;
-use tokio::time::sleep;
+use std::{
+    thread::{sleep, spawn},
+    time::Duration,
+};
 
-async fn task_one() {
-    sleep(Duration::from_secs(2)).await;
-    println!("Task One Done!");
-}
+fn main() {
+    let thread1 = spawn(|| {
+        println!("This is from thread 1 and it started");
+        sleep(Duration::new(4, 0));
+        println!("Thread 1 ended");
+    });
+    let thread2 = spawn(|| {
+        println!("This is from thread 2 and it started");
+        for i in 1..10 {
+            print!("{} ", i);
 
-async fn task_two() {
-    sleep(Duration::from_secs(1)).await;
-    println!("Task Two Done!");
-}
+            if i == 9 {
+                println!("");
+            }
+        }
+        println!("Thread 2 ended");
+    });
 
-#[tokio::main]
-async fn main() {
-    println!("Starting tasks...");
+    /*
+    joining the threads are mendatory otherwise main thread will die after spawning new threads, but using join we will tell main thread to wait
+    till child threads are alive
+     */
 
-    // Run both tasks concurrently
-    let (res1, res2) = tokio::join!(task_one(), task_two());
+    thread1.join().unwrap();
+    thread2.join().unwrap();
 
-    println!("Both tasks finished!");
+    // spawn(|| print!("Something")).join().unwrap(); // we can also join like this
+
 }
